@@ -16,4 +16,4 @@ db.once("open", () => {
 });
 
 
-module.exports = db
+export default db;

@@ -4,4 +4,4 @@ const Document = new Schema({
     data:Object
 })
 
-module.exports = model("Document",Document)
+export default model("Document",Document)
