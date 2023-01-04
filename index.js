@@ -6,6 +6,7 @@ import { createServer } from "http";
 import Document from "./Document.js";
 import findOrCreateDocument from "./Services/findorCreateDocument.js";
 import db from "./db.js";
+import getIP from "./Services/getIP.js";
 
 const app = express();
 const httpServer = createServer(app);
@@ -35,6 +36,6 @@ io.on("connection", (socket) => {
 
 app.use("/bot", botRouter);
 
-httpServer.listen(port, () => {
-  console.log(`Noty listening on http://localhost:${port}`);
+httpServer.listen(port,getIP() ,() => {
+  console.log(`Noty listening on http://${getIP()}:${port}`);
 });
