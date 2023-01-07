@@ -20,16 +20,23 @@ io.on("connection", (socket) => {
   socket.on("get-document", async (documentId) => {
     const document = await findOrCreateDocument(documentId);
     const data = document.data;
+    const filename = document.filename
     socket.join(documentId);
-    socket.emit("load-document", data);
+    socket.emit("load-document", data , filename);
 
     // nested the event inside this event so that document id is also accessible
     socket.on("send-changes", (delta) => {
       socket.broadcast.to(documentId).emit("receive-changes", delta); // sending data to a particular room
     });
 
-    socket.on("save-document", async (data) => {
-      await Document.findByIdAndUpdate(documentId, { data });
+    // filename change event
+    socket.on("send-filename",(filename)=>{
+      socket.broadcast.to(documentId).emit("receive-filename",filename);
+    })
+
+    socket.on("save-document", async (fileRecord) => {
+      const {data,filename} = fileRecord;
+      await Document.findByIdAndUpdate(documentId, { data:data , filename:filename });
     });
   });
 });
