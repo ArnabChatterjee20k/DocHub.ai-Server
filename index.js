@@ -7,6 +7,8 @@ import Document from "./Document.js";
 import findOrCreateDocument from "./Services/findorCreateDocument.js";
 import db from "./db.js";
 import getIP from "./Services/getIP.js";
+import blogRouter from "./Routes/BlogRoute.js";
+
 
 const app = express();
 const httpServer = createServer(app);
@@ -42,6 +44,7 @@ io.on("connection", (socket) => {
 });
 
 app.use("/bot", botRouter);
+app.use("/blog", blogRouter);
 
 httpServer.listen(port,getIP() ,() => {
   console.log(`Noty listening on http://${getIP()}:${port}`);
